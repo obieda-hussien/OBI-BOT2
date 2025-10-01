@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Session files
+Data/Sesiones/
+sessions/
+*.data.json
+creds.json
+
+# Temporary files
+tmp/
+*.tmp
+*.log
+output.log
+
+# Build files
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# Environment files
+.env
+.env.local
+
+# Database
+database.json
+*.db
+*.sqlite
+
+# Backup files
+*.zip
+*.rar
+*.tar.gz
+Backup*.zip
+
+# Core dumps
+core.*
