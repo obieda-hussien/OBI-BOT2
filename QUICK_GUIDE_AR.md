@@ -89,6 +89,17 @@ rm -rf tmp/*
 npm cache clean --force
 ```
 
+### ⚠️  تحذيرات الأمان (Security Warnings)
+```bash
+# تحذيرات npm طبيعية - لا تقلق
+# npm warnings are normal - don't worry
+# البوت يعمل بشكل طبيعي / Bot works normally
+
+# إصلاح ما يمكن إصلاحه (اختياري)
+# Fix what can be fixed (optional)
+npm audit fix --no-bin-links --legacy-peer-deps
+```
+
 ## 🌟 نصائح (Tips)
 
 ### منع الترمكس من الإيقاف (Prevent Termux Sleep)

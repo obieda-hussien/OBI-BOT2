@@ -70,6 +70,25 @@ echo ""
 echo "✅ تم تثبيت الحزم بنجاح!"
 echo "✅ Packages installed successfully!"
 
+# محاولة إصلاح الثغرات الأمنية
+echo ""
+echo "🔒 فحص وإصلاح الثغرات الأمنية..."
+echo "🔒 Checking and fixing security vulnerabilities..."
+
+# إنشاء package-lock.json إذا لم يكن موجوداً
+if [ ! -f "package-lock.json" ]; then
+    npm i --package-lock-only --no-bin-links --legacy-peer-deps 2>/dev/null
+fi
+
+# محاولة إصلاح الثغرات الأمنية تلقائياً
+npm audit fix --no-bin-links --legacy-peer-deps 2>/dev/null || true
+
+echo ""
+echo "ℹ️  ملاحظة: بعض التحذيرات الأمنية قد تظهر من حزم فرعية ولا يمكن إصلاحها تلقائياً"
+echo "ℹ️  Note: Some security warnings from sub-packages may appear and cannot be auto-fixed"
+echo "ℹ️  هذا طبيعي ولا يؤثر على عمل البوت"
+echo "ℹ️  This is normal and does not affect the bot's functionality"
+
 # إنشاء المجلدات الضرورية
 echo ""
 echo "📁 إنشاء المجلدات الضرورية..."
