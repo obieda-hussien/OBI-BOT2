@@ -15,6 +15,57 @@
 </p>
 <h1 align="center"></h1>
   </div>
+
+## 🤖 OBI-BOT2 - WhatsApp Bot
+
+### 📱 التثبيت على الترمكس (Termux Installation)
+
+**اقرأ دليل التثبيت الكامل بالعربية:** [README_AR.md](./README_AR.md)
+
+**Quick Install for Termux:**
+```bash
+# 1. Update Termux
+pkg update && pkg upgrade -y
+
+# 2. Install Git
+pkg install git -y
+
+# 3. Clone the repository
+git clone https://github.com/obieda-hussien/OBI-BOT2.git
+cd OBI-BOT2
+
+# 4. Run installation script
+bash termux-install.sh
+
+# 5. Start the bot
+bash termux-start.sh
+```
+
+### 💻 Installation on VPS/Server
+
+```bash
+# Install dependencies
+apt-get update
+apt-get install -y git nodejs npm ffmpeg imagemagick
+
+# Clone and setup
+git clone https://github.com/obieda-hussien/OBI-BOT2.git
+cd OBI-BOT2
+npm install
+
+# Start the bot
+npm start
+```
+
+### 🐳 Docker Installation
+
+```bash
+# Build the Docker image
+docker build -t obi-bot2 .
+
+# Run the container
+docker run -d -p 5000:5000 --name obi-bot obi-bot2
+```
   
 ### `¿Dudas? ¡Contáctame!`
 <a href="http://wa.me/522431268546" target="blank"><img src="https://img.shields.io/badge/FzTeis-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
@@ -45,7 +96,21 @@
 
 </details>
 
+### 📚 Documentation
+
+- **Arabic Guide:** [README_AR.md](./README_AR.md) - دليل كامل بالعربية
+- **Installation Scripts:**
+  - `termux-install.sh` - Automated Termux installation
+  - `termux-start.sh` - Start script with auto-restart
+  - `INSTALL_GUIDE.sh` - Quick installation guide
+
+### ✨ Features
+
+- ✅ **Termux Compatible** - Optimized for Android devices
+- ✅ **Auto-Restart** - Automatic restart on crashes
+- ✅ **Arabic Interface** - Fully translated to Arabic
+- ✅ **Multi-Device** - Support for sub-bots
+- ✅ **Easy Setup** - One-command installation
+
 `Sylphiette Powered by I'm Fz ~`
-# OBI-BOT2
-# OBI-BOT2
 # OBI-BOT2

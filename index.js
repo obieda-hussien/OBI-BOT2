@@ -1,5 +1,5 @@
 console.clear()
-console.log('✅ Iniciando...')
+console.log('✅ جاري البدء...')
 
 import { join, dirname } from 'path'
 import { createRequire } from 'module'
@@ -27,7 +27,7 @@ function verify() {
         fs.mkdirSync(`./${cpss}`, { recursive: true })
       }
     } else {
-      console.warn('Ruta inválida o no definida:', cpss)
+      console.warn('مسار غير صالح أو غير محدد:', cpss)
     }
   }
 }
@@ -67,7 +67,7 @@ function start(file) {
 
   p.on('exit', (_, code) => {
     isRunning = false
-    console.error('❎ Ocurrió un error inesperado:', code)
+    console.error('❎ حدث خطأ غير متوقع:', code)
     if (code === 0) return
     watchFile(args[0], () => {
       unwatchFile(args[0])

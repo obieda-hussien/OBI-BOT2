@@ -145,15 +145,15 @@ opcion = '1'
 if (!methodCodeQR && !methodCode && !fs.existsSync(`./${authFile}/creds.json`)) {
   do {
     console.log(
-      chalk.bgGreen.white.bold('[ Elige una opción de conexión ]\n') +
-      chalk.white('1.') + ' Conexión mediante ' + chalk.green('código QR') + '\n' +
-      chalk.white('2.') + ' Conexión mediante ' + chalk.green('código de 8 dígitos') + '\n'
+      chalk.bgGreen.white.bold('[ اختر طريقة الاتصال ]\n') +
+      chalk.white('1.') + ' الاتصال عبر ' + chalk.green('كود QR') + '\n' +
+      chalk.white('2.') + ' الاتصال عبر ' + chalk.green('كود مكون من 8 أرقام') + '\n'
     );
 
-    opcion = await question(chalk.bgMagenta.white.bold('🌱 Seleccione una opción (1 o 2): ') + ' ')
+    opcion = await question(chalk.bgMagenta.white.bold('🌱 اختر خياراً (1 أو 2): ') + ' ')
     
     if (!/^[1-2]$/.test(opcion)) {
-      console.log(chalk.bgRed.white.bold('\n[ Por favor, seleccione solo 1 o 2 ]\n'));
+      console.log(chalk.bgRed.white.bold('\n[ من فضلك، اختر 1 أو 2 فقط ]\n'));
     }
   } while ((opcion !== '1' && opcion !== '2') || fs.existsSync(`./${authFile}/creds.json`));
 }
@@ -201,7 +201,7 @@ if (!!phoneNumber) {
 addNumber = phoneNumber.replace(/[^0-9]/g, '')
 } else {
 do {
-phoneNumber = await question(chalk.bgBlack(chalk.bold.greenBright(`🌹  Por favor ingrese el número de WhatsApp. Ejemplo :\n+52 243 10x xxxx ( se recomienda copiarlo directamente de WhatsApp )\n${chalk.bold.magentaBright('---> ')}`)))
+phoneNumber = await question(chalk.bgBlack(chalk.bold.greenBright(`🌹  من فضلك أدخل رقم الواتساب. مثال:\n+20 123 456 7890 ( يُنصح بنسخه مباشرة من الواتساب )\n${chalk.bold.magentaBright('---> ')}`)))
 phoneNumber = phoneNumber.replace(/\D/g,'')
 if (!phoneNumber.startsWith('+')) {
 phoneNumber = `+${phoneNumber}`
@@ -249,9 +249,9 @@ function deleteCoreFiles(filePath) {
   if (coreFilePattern.test(filename)) {
     fs.unlink(filePath, (err) => {
       if (err) {
-        console.error(`Error eliminando el archivo ${filePath}:`, err);
+        console.error(`خطأ في حذف الملف ${filePath}:`, err);
       } else {
-        console.log(`Archivo eliminado: ${filePath}`);
+        console.log(`تم حذف الملف: ${filePath}`);
       }
     });
   }
@@ -282,37 +282,37 @@ if (opcion == '1' || methodCodeQR) {
     console.log(chalk.yellow('🌿-  Escanea el código QR.'));
  }}
   if (connection == 'open') {
-    console.log(chalk.yellow('🌱 ¡Conectado correctamente!'));
+    console.log(chalk.yellow('🌱 تم الاتصال بنجاح!'));
   }
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode;
 if (reason == 405) {
 await fs.unlinkSync(Sesion + "/creds.json")
-console.log(chalk.bold.redBright(`🍁 Conexión replazada, Por favor espere un momento me voy a reiniciar...\nSi aparecen error vuelve a iniciar con : npm start`)) 
+console.log(chalk.bold.redBright(`🍁 تم استبدال الاتصال، من فضلك انتظر قليلاً سأقوم بإعادة التشغيل...\nإذا ظهرت أخطاء، أعد التشغيل باستخدام: npm start`)) 
 process.send('reset')}
 if (connection === 'close') {
     if (reason === DisconnectReason.badSession) {
-        conn.logger.error(`🌴 Sesión incorrecta, por favor elimina la carpeta ${global.authFile} y escanea nuevamente.`);
+        conn.logger.error(`🌴 جلسة غير صحيحة، من فضلك احذف مجلد ${global.authFile} وامسح الكود مرة أخرى.`);
         //process.exit();
     } else if (reason === DisconnectReason.connectionClosed) {
-        conn.logger.warn(`🌾 Conexión cerrada, reconectando...`);
+        conn.logger.warn(`🌾 تم إغلاق الاتصال، جاري إعادة الاتصال...`);
         await global.reloadHandler(true).catch(console.error);
     } else if (reason === DisconnectReason.connectionLost) {
-        conn.logger.warn(`🌿 Conexión perdida con el servidor, reconectando...`);
+        conn.logger.warn(`🌿 فقد الاتصال بالخادم، جاري إعادة الاتصال...`);
         await global.reloadHandler(true).catch(console.error);
     } else if (reason === DisconnectReason.connectionReplaced) {
-        conn.logger.error(`🍀 Conexión reemplazada, se ha abierto otra nueva sesión. Por favor, cierra la sesión actual primero.`);
+        conn.logger.error(`🍀 تم استبدال الاتصال، تم فتح جلسة جديدة. من فضلك، أغلق الجلسة الحالية أولاً.`);
         //process.exit();
     } else if (reason === DisconnectReason.loggedOut) {
-        conn.logger.error(`🌳 Conexion cerrada, por favor elimina la carpeta ${global.authFile} y escanea nuevamente.`);
+        conn.logger.error(`🌳 تم إغلاق الاتصال، من فضلك احذف مجلد ${global.authFile} وامسح الكود مرة أخرى.`);
         //process.exit();
     } else if (reason === DisconnectReason.restartRequired) {
-        conn.logger.info(`🍃 Reinicio necesario, reinicie el servidor si presenta algún problema.`);
+        conn.logger.info(`🍃 إعادة التشغيل مطلوبة، أعد تشغيل الخادم إذا واجهت أي مشكلة.`);
         await global.reloadHandler(true).catch(console.error);
     } else if (reason === DisconnectReason.timedOut) {
-        conn.logger.warn(`🌲 Tiempo de conexión agotado, reconectando...`);
+        conn.logger.warn(`🌲 انتهت مهلة الاتصال، جاري إعادة الاتصال...`);
         await global.reloadHandler(true).catch(console.error);
     } else {
-        conn.logger.warn(`🍄 Razón de desconexión desconocida. ${reason || ''}: ${connection || ''}`);
+        conn.logger.warn(`🍄 سبب الانقطاع غير معروف. ${reason || ''}: ${connection || ''}`);
         await global.reloadHandler(true).catch(console.error);
     }
 }
