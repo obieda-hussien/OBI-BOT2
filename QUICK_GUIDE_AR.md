@@ -53,6 +53,20 @@ tail -f output.log
 
 ## 🔧 حل المشاكل (Troubleshooting)
 
+### مشكلة: خطأ EACCES في npm install
+```bash
+# الحل الموصى به للترمكس / Recommended for Termux
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install --no-bin-links --legacy-peer-deps
+```
+
+### مشكلة: Cannot find package (الحزم غير موجودة)
+```bash
+# تأكد من اكتمال التثبيت / Ensure installation completed
+npm install --no-bin-links --legacy-peer-deps
+```
+
 ### مشكلة: البوت لا يعمل (Bot not working)
 ```bash
 # إعادة التثبيت / Reinstall
@@ -73,6 +87,36 @@ npm start
 # تنظيف / Clean
 rm -rf tmp/*
 npm cache clean --force
+```
+
+### ⚠️  تحذيرات الأمان (Security Warnings)
+```bash
+# تحذيرات npm طبيعية - لا تقلق
+# npm warnings are normal - don't worry
+# البوت يعمل بشكل طبيعي / Bot works normally
+
+# إصلاح ما يمكن إصلاحه (اختياري)
+# Fix what can be fixed (optional)
+npm audit fix --no-bin-links --legacy-peer-deps
+```
+
+### 🖼️  خطأ Sharp (Image Processing Error)
+```bash
+# تثبيت libvips / Install libvips
+pkg install libvips -y
+
+# إعادة بناء جميع نسخ sharp / Rebuild all sharp instances
+cd ~/OBI-BOT2
+find node_modules -type d -name "sharp" -exec sh -c 'cd "{}" && npm rebuild --no-bin-links' \;
+
+# أو إعادة تثبيت كاملة / Or complete reinstall
+rm -rf node_modules && npm install --no-bin-links --legacy-peer-deps
+
+# ملاحظة: رسائل "gyp info" طبيعية أثناء البناء
+# Note: "gyp info" messages are normal during build
+
+# البوت يعمل حتى لو فشل sharp
+# Bot works even if sharp fails
 ```
 
 ## 🌟 نصائح (Tips)

@@ -15,7 +15,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const require = createRequire(__dirname)
 const { name, author } = require(join(__dirname, './package.json'))
 const { say } = cfonts
-const rl = createInterface(process.stdin, process.stdout)
+// Don't create readline interface in parent - let child handle stdin directly
+// const rl = createInterface(process.stdin, process.stdout)
 
 function verify() {
   let jadi = 'Data/Sesiones/Subbots'
@@ -77,9 +78,11 @@ function start(file) {
 
   let opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse())
   if (!opts['test']) {
-    if (!rl.listenerCount()) rl.on('line', line => {
-      p.emit('message', line.trim())
-    })
+    // Don't intercept readline - let child process handle stdin directly
+    // This prevents duplicate input handling and unstable behavior
+    // if (!rl.listenerCount()) rl.on('line', line => {
+    //   p.emit('message', line.trim())
+    // })
   }
 }
 

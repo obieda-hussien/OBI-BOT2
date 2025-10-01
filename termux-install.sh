@@ -22,7 +22,7 @@ pkg upgrade -y
 # تثبيت الحزم الأساسية
 echo "🔧 تثبيت الحزم الأساسية..."
 echo "🔧 Installing essential packages..."
-pkg install -y git nodejs-lts python ffmpeg imagemagick wget yarn
+pkg install -y git nodejs-lts python ffmpeg imagemagick wget yarn libvips
 
 # التحقق من تثبيت Node.js
 echo ""
@@ -35,7 +35,100 @@ npm --version
 echo ""
 echo "📚 تثبيت حزم Node.js المطلوبة..."
 echo "📚 Installing required Node.js packages..."
-npm install
+
+# استخدام --no-bin-links لتجنب مشاكل الصلاحيات في Termux
+# Using --no-bin-links to avoid permission issues in Termux
+npm install --no-bin-links --legacy-peer-deps
+
+# التحقق من نجاح التثبيت
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "⚠️  حدث خطأ أثناء تثبيت الحزم. جاري المحاولة مرة أخرى..."
+    echo "⚠️  Error occurred during package installation. Retrying..."
+    echo ""
+    
+    # تنظيف ذاكرة التخزين المؤقت ومحاولة مجدداً
+    npm cache clean --force
+    npm install --no-bin-links --legacy-peer-deps --verbose
+    
+    if [ $? -ne 0 ]; then
+        echo ""
+        echo "❌ فشل تثبيت الحزم!"
+        echo "❌ Package installation failed!"
+        echo ""
+        echo "💡 جرب الحلول التالية:"
+        echo "💡 Try these solutions:"
+        echo "   1. rm -rf node_modules package-lock.json"
+        echo "   2. npm cache clean --force"
+        echo "   3. npm install --no-bin-links --legacy-peer-deps"
+        echo ""
+        exit 1
+    fi
+fi
+
+echo ""
+echo "✅ تم تثبيت الحزم بنجاح!"
+echo "✅ Packages installed successfully!"
+
+# إعادة بناء حزمة sharp لتعمل مع Termux
+echo ""
+echo "🖼️  إعادة بناء حزمة sharp للعمل مع Termux..."
+echo "🖼️  Rebuilding sharp package for Termux compatibility..."
+echo "ℹ️  هذا قد يستغرق بضع دقائق، الرجاء الانتظار..."
+echo "ℹ️  This may take a few minutes, please wait..."
+
+# البحث عن جميع نسخ sharp في node_modules وإعادة بنائها
+sharp_found=false
+sharp_success=true
+
+# إعادة بناء sharp الرئيسي إذا كان موجوداً
+if [ -d "node_modules/sharp" ]; then
+    sharp_found=true
+    npm rebuild sharp --no-bin-links > /dev/null 2>&1 || sharp_success=false
+fi
+
+# البحث عن sharp المتداخل في الحزم الأخرى وإعادة بنائه
+for sharp_dir in $(find node_modules -type d -name "sharp" 2>/dev/null); do
+    if [ -f "$sharp_dir/package.json" ]; then
+        sharp_found=true
+        echo "  ↳ إعادة بناء: $sharp_dir"
+        (cd "$(dirname "$sharp_dir")" && npm rebuild sharp --no-bin-links > /dev/null 2>&1) || sharp_success=false
+    fi
+done
+
+if [ "$sharp_found" = true ]; then
+    if [ "$sharp_success" = true ]; then
+        echo "✅ تم إعادة بناء جميع نسخ sharp بنجاح!"
+        echo "✅ All sharp instances rebuilt successfully!"
+    else
+        echo "⚠️  تحذير: قد تكون هناك مشكلة في بعض نسخ sharp"
+        echo "⚠️  Warning: There might be an issue with some sharp instances"
+        echo "ℹ️  البوت سيعمل ولكن بعض ميزات معالجة الصور قد لا تعمل"
+        echo "ℹ️  Bot will work but some image processing features may not work"
+    fi
+else
+    echo "ℹ️  حزمة sharp غير موجودة - تخطي إعادة البناء"
+    echo "ℹ️  Sharp package not found - skipping rebuild"
+fi
+
+# محاولة إصلاح الثغرات الأمنية
+echo ""
+echo "🔒 فحص وإصلاح الثغرات الأمنية..."
+echo "🔒 Checking and fixing security vulnerabilities..."
+
+# إنشاء package-lock.json إذا لم يكن موجوداً
+if [ ! -f "package-lock.json" ]; then
+    npm i --package-lock-only --no-bin-links --legacy-peer-deps 2>/dev/null
+fi
+
+# محاولة إصلاح الثغرات الأمنية تلقائياً
+npm audit fix --no-bin-links --legacy-peer-deps 2>/dev/null || true
+
+echo ""
+echo "ℹ️  ملاحظة: بعض التحذيرات الأمنية قد تظهر من حزم فرعية ولا يمكن إصلاحها تلقائياً"
+echo "ℹ️  Note: Some security warnings from sub-packages may appear and cannot be auto-fixed"
+echo "ℹ️  هذا طبيعي ولا يؤثر على عمل البوت"
+echo "ℹ️  This is normal and does not affect the bot's functionality"
 
 # إنشاء المجلدات الضرورية
 echo ""
