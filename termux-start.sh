@@ -18,6 +18,19 @@ if ! command -v node &> /dev/null; then
     exit 1
 fi
 
+# التحقق من تثبيت الحزم المطلوبة
+if [ ! -d "node_modules" ]; then
+    echo "❌ الحزم المطلوبة غير مثبتة!"
+    echo "❌ Required packages are not installed!"
+    echo "📥 قم بتشغيل سكريبت التثبيت أولاً: ./termux-install.sh"
+    echo "📥 Please run the installation script first: ./termux-install.sh"
+    echo ""
+    echo "أو قم بتثبيت الحزم يدوياً / Or install packages manually:"
+    echo "   npm install --no-bin-links --legacy-peer-deps"
+    echo ""
+    exit 1
+fi
+
 # التحقق من وجود المجلدات الضرورية
 if [ ! -d "Data/Sesiones/Principal" ]; then
     echo "📁 إنشاء المجلدات الضرورية..."

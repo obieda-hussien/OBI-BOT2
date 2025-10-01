@@ -53,6 +53,20 @@ tail -f output.log
 
 ## 🔧 حل المشاكل (Troubleshooting)
 
+### مشكلة: خطأ EACCES في npm install
+```bash
+# الحل الموصى به للترمكس / Recommended for Termux
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install --no-bin-links --legacy-peer-deps
+```
+
+### مشكلة: Cannot find package (الحزم غير موجودة)
+```bash
+# تأكد من اكتمال التثبيت / Ensure installation completed
+npm install --no-bin-links --legacy-peer-deps
+```
+
 ### مشكلة: البوت لا يعمل (Bot not working)
 ```bash
 # إعادة التثبيت / Reinstall

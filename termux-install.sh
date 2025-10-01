@@ -35,7 +35,40 @@ npm --version
 echo ""
 echo "📚 تثبيت حزم Node.js المطلوبة..."
 echo "📚 Installing required Node.js packages..."
-npm install
+
+# استخدام --no-bin-links لتجنب مشاكل الصلاحيات في Termux
+# Using --no-bin-links to avoid permission issues in Termux
+npm install --no-bin-links --legacy-peer-deps
+
+# التحقق من نجاح التثبيت
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "⚠️  حدث خطأ أثناء تثبيت الحزم. جاري المحاولة مرة أخرى..."
+    echo "⚠️  Error occurred during package installation. Retrying..."
+    echo ""
+    
+    # تنظيف ذاكرة التخزين المؤقت ومحاولة مجدداً
+    npm cache clean --force
+    npm install --no-bin-links --legacy-peer-deps --verbose
+    
+    if [ $? -ne 0 ]; then
+        echo ""
+        echo "❌ فشل تثبيت الحزم!"
+        echo "❌ Package installation failed!"
+        echo ""
+        echo "💡 جرب الحلول التالية:"
+        echo "💡 Try these solutions:"
+        echo "   1. rm -rf node_modules package-lock.json"
+        echo "   2. npm cache clean --force"
+        echo "   3. npm install --no-bin-links --legacy-peer-deps"
+        echo ""
+        exit 1
+    fi
+fi
+
+echo ""
+echo "✅ تم تثبيت الحزم بنجاح!"
+echo "✅ Packages installed successfully!"
 
 # إنشاء المجلدات الضرورية
 echo ""
