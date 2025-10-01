@@ -74,11 +74,16 @@ echo "✅ Packages installed successfully!"
 echo ""
 echo "🖼️  إعادة بناء حزمة sharp للعمل مع Termux..."
 echo "🖼️  Rebuilding sharp package for Termux compatibility..."
+echo "ℹ️  هذا قد يستغرق بضع دقائق، الرجاء الانتظار..."
+echo "ℹ️  This may take a few minutes, please wait..."
 
 # التحقق من وجود sharp في node_modules
 if [ -d "node_modules/sharp" ]; then
-    # محاولة إعادة بناء sharp
-    npm rebuild sharp --no-bin-links 2>/dev/null || {
+    # محاولة إعادة بناء sharp مع إخفاء المخرجات التفصيلية
+    npm rebuild sharp --no-bin-links > /dev/null 2>&1 && {
+        echo "✅ تم إعادة بناء sharp بنجاح!"
+        echo "✅ Sharp rebuilt successfully!"
+    } || {
         echo "⚠️  تحذير: قد تكون هناك مشكلة في حزمة sharp"
         echo "⚠️  Warning: There might be an issue with sharp package"
         echo "ℹ️  البوت سيعمل ولكن بعض ميزات معالجة الصور قد لا تعمل"

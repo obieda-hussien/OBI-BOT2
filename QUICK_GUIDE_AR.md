@@ -108,6 +108,9 @@ pkg install libvips -y
 # إعادة بناء sharp / Rebuild sharp
 npm rebuild sharp --no-bin-links
 
+# ملاحظة: رسائل "gyp info" طبيعية أثناء البناء
+# Note: "gyp info" messages are normal during build
+
 # البوت يعمل حتى لو فشل sharp
 # Bot works even if sharp fails
 ```
