@@ -77,18 +77,35 @@ echo "🖼️  Rebuilding sharp package for Termux compatibility..."
 echo "ℹ️  هذا قد يستغرق بضع دقائق، الرجاء الانتظار..."
 echo "ℹ️  This may take a few minutes, please wait..."
 
-# التحقق من وجود sharp في node_modules
+# البحث عن جميع نسخ sharp في node_modules وإعادة بنائها
+sharp_found=false
+sharp_success=true
+
+# إعادة بناء sharp الرئيسي إذا كان موجوداً
 if [ -d "node_modules/sharp" ]; then
-    # محاولة إعادة بناء sharp مع إخفاء المخرجات التفصيلية
-    npm rebuild sharp --no-bin-links > /dev/null 2>&1 && {
-        echo "✅ تم إعادة بناء sharp بنجاح!"
-        echo "✅ Sharp rebuilt successfully!"
-    } || {
-        echo "⚠️  تحذير: قد تكون هناك مشكلة في حزمة sharp"
-        echo "⚠️  Warning: There might be an issue with sharp package"
+    sharp_found=true
+    npm rebuild sharp --no-bin-links > /dev/null 2>&1 || sharp_success=false
+fi
+
+# البحث عن sharp المتداخل في الحزم الأخرى وإعادة بنائه
+for sharp_dir in $(find node_modules -type d -name "sharp" 2>/dev/null); do
+    if [ -f "$sharp_dir/package.json" ]; then
+        sharp_found=true
+        echo "  ↳ إعادة بناء: $sharp_dir"
+        (cd "$(dirname "$sharp_dir")" && npm rebuild sharp --no-bin-links > /dev/null 2>&1) || sharp_success=false
+    fi
+done
+
+if [ "$sharp_found" = true ]; then
+    if [ "$sharp_success" = true ]; then
+        echo "✅ تم إعادة بناء جميع نسخ sharp بنجاح!"
+        echo "✅ All sharp instances rebuilt successfully!"
+    else
+        echo "⚠️  تحذير: قد تكون هناك مشكلة في بعض نسخ sharp"
+        echo "⚠️  Warning: There might be an issue with some sharp instances"
         echo "ℹ️  البوت سيعمل ولكن بعض ميزات معالجة الصور قد لا تعمل"
         echo "ℹ️  Bot will work but some image processing features may not work"
-    }
+    fi
 else
     echo "ℹ️  حزمة sharp غير موجودة - تخطي إعادة البناء"
     echo "ℹ️  Sharp package not found - skipping rebuild"

@@ -105,8 +105,12 @@ npm audit fix --no-bin-links --legacy-peer-deps
 # تثبيت libvips / Install libvips
 pkg install libvips -y
 
-# إعادة بناء sharp / Rebuild sharp
-npm rebuild sharp --no-bin-links
+# إعادة بناء جميع نسخ sharp / Rebuild all sharp instances
+cd ~/OBI-BOT2
+find node_modules -type d -name "sharp" -exec sh -c 'cd "{}" && npm rebuild --no-bin-links' \;
+
+# أو إعادة تثبيت كاملة / Or complete reinstall
+rm -rf node_modules && npm install --no-bin-links --legacy-peer-deps
 
 # ملاحظة: رسائل "gyp info" طبيعية أثناء البناء
 # Note: "gyp info" messages are normal during build

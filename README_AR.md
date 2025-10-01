@@ -210,16 +210,23 @@ Error: Could not load the "sharp" module using the android-arm64 runtime
 # تثبيت مكتبة libvips المطلوبة
 pkg install libvips -y
 
-# إعادة بناء حزمة sharp
+# إعادة بناء جميع نسخ sharp (بما في ذلك المتداخلة)
 cd ~/OBI-BOT2
-npm rebuild sharp --no-bin-links
+
+# الطريقة 1: إعادة بناء تلقائية لجميع النسخ
+find node_modules -type d -name "sharp" -exec sh -c 'cd "{}" && npm rebuild --no-bin-links' \;
+
+# أو الطريقة 2: إعادة تثبيت كاملة
+rm -rf node_modules package-lock.json
+npm install --no-bin-links --legacy-peer-deps
 
 # إعادة تشغيل البوت
 npm start
 ```
 
 **ملاحظة:**
-- سكريبت `termux-install.sh` يقوم بتثبيت libvips تلقائياً
+- سكريبت `termux-install.sh` المحدث يقوم بإعادة بناء جميع نسخ sharp تلقائياً
+- المشكلة قد تحدث إذا كان هناك sharp متداخل في حزم أخرى (مثل wa-sticker-formatter)
 - عند إعادة بناء sharp، قد تظهر رسائل تفصيلية من `node-gyp` - **هذا طبيعي**
 - الرسائل مثل "gyp info" و "sharp: Building from source" تعني أن البناء يعمل بشكل صحيح
 - إذا استمرت المشكلة، البوت سيعمل ولكن بعض ميزات معالجة الصور قد لا تعمل
