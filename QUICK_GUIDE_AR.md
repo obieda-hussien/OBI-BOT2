@@ -100,6 +100,18 @@ npm cache clean --force
 npm audit fix --no-bin-links --legacy-peer-deps
 ```
 
+### 🖼️  خطأ Sharp (Image Processing Error)
+```bash
+# تثبيت libvips / Install libvips
+pkg install libvips -y
+
+# إعادة بناء sharp / Rebuild sharp
+npm rebuild sharp --no-bin-links
+
+# البوت يعمل حتى لو فشل sharp
+# Bot works even if sharp fails
+```
+
 ## 🌟 نصائح (Tips)
 
 ### منع الترمكس من الإيقاف (Prevent Termux Sleep)

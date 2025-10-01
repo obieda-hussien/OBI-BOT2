@@ -22,7 +22,7 @@ pkg upgrade -y
 # تثبيت الحزم الأساسية
 echo "🔧 تثبيت الحزم الأساسية..."
 echo "🔧 Installing essential packages..."
-pkg install -y git nodejs-lts python ffmpeg imagemagick wget yarn
+pkg install -y git nodejs-lts python ffmpeg imagemagick wget yarn libvips
 
 # التحقق من تثبيت Node.js
 echo ""
@@ -69,6 +69,25 @@ fi
 echo ""
 echo "✅ تم تثبيت الحزم بنجاح!"
 echo "✅ Packages installed successfully!"
+
+# إعادة بناء حزمة sharp لتعمل مع Termux
+echo ""
+echo "🖼️  إعادة بناء حزمة sharp للعمل مع Termux..."
+echo "🖼️  Rebuilding sharp package for Termux compatibility..."
+
+# التحقق من وجود sharp في node_modules
+if [ -d "node_modules/sharp" ]; then
+    # محاولة إعادة بناء sharp
+    npm rebuild sharp --no-bin-links 2>/dev/null || {
+        echo "⚠️  تحذير: قد تكون هناك مشكلة في حزمة sharp"
+        echo "⚠️  Warning: There might be an issue with sharp package"
+        echo "ℹ️  البوت سيعمل ولكن بعض ميزات معالجة الصور قد لا تعمل"
+        echo "ℹ️  Bot will work but some image processing features may not work"
+    }
+else
+    echo "ℹ️  حزمة sharp غير موجودة - تخطي إعادة البناء"
+    echo "ℹ️  Sharp package not found - skipping rebuild"
+fi
 
 # محاولة إصلاح الثغرات الأمنية
 echo ""
